@@ -29,17 +29,20 @@ Games remain fully installed and playable through Steam — this only affects vi
 
 1. Checks for administrator privileges (exits with an error message if not elevated)
 2. Prompts for confirmation before making changes
-3. Searches two registry locations for entries containing `"Steam App"`:
+3. Searches two registry locations for keys named exactly `Steam App <number>`:
    - `HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall`
    - `HKLM\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall`
-4. Deletes matching registry keys
-5. Reports how many entries were removed
+4. Exports each matching key to a `.reg` file in a `SteamUninstallBackup` folder next to the script
+5. Deletes the key only if its backup succeeded
+6. Reports how many entries were removed and how many failed
 
 ## Notes
 
 - This is a registry-only change — safe to run repeatedly.
 - Steam may re-create these entries after future game installs or updates, so you may need to re-run this periodically.
-- If you want to restore visibility, simply reinstall or verify the affected game(s) through Steam.
+- To restore an entry, double-click its `.reg` file in `SteamUninstallBackup` (or run `reg import "<file>.reg"` as administrator).
+- Tools that read the Windows uninstall list (e.g. `winget list`, some game launchers) will also stop seeing the removed games.
+- Backup `.reg` files contain install paths, which may include your Windows username. Don't share them publicly.
 
 ## Disclaimer
 
